@@ -100,7 +100,7 @@ type jsonRequest struct {
 	method         string
 	cmd            interface{}
 	marshalledJSON []byte
-	responseChan   chan *response
+	responseChan   chan *Response
 }
 
 // Client represents a Bitcoin RPC client which allows easy access to the
@@ -287,9 +287,9 @@ type (
 	}
 )
 
-// response is the raw bytes of a JSON-RPC result, or the error if the response
+// Response is the raw bytes of a JSON-RPC result, or the error if the response
 // error object was non-null.
-type response struct {
+type Response struct {
 	result []byte
 	err    error
 }
@@ -370,7 +370,7 @@ func (c *Client) handleMessage(msg []byte) {
 
 	// Deliver the response.
 	result, err := in.rawResponse.result()
-	request.responseChan <- &response{result: result, err: err}
+	request.responseChan <- &Response{result: result, err: err}
 }
 
 // shouldLogReadError returns whether or not the passed error, which is expected
@@ -694,7 +694,7 @@ func (c *Client) handleSendPostMessage(details *sendPostDetails) {
 	log.Tracef("Sending command [%s] with id %d", jReq.method, jReq.id)
 	httpResponse, err := c.httpClient.Do(details.httpRequest)
 	if err != nil {
-		jReq.responseChan <- &response{err: err}
+		jReq.responseChan <- &Response{err: err}
 		return
 	}
 
@@ -703,7 +703,7 @@ func (c *Client) handleSendPostMessage(details *sendPostDetails) {
 	httpResponse.Body.Close()
 	if err != nil {
 		err = fmt.Errorf("error reading json reply: %v", err)
-		jReq.responseChan <- &response{err: err}
+		jReq.responseChan <- &Response{err: err}
 		return
 	}
 
@@ -716,12 +716,12 @@ func (c *Client) handleSendPostMessage(details *sendPostDetails) {
 		// response bytes.
 		err = fmt.Errorf("status code: %d, response: %q",
 			httpResponse.StatusCode, string(respBytes))
-		jReq.responseChan <- &response{err: err}
+		jReq.responseChan <- &Response{err: err}
 		return
 	}
 
 	res, err := resp.result()
-	jReq.responseChan <- &response{result: res, err: err}
+	jReq.responseChan <- &Response{result: res, err: err}
 }
 
 // sendPostHandler handles all outgoing messages when the client is running
@@ -748,7 +748,7 @@ cleanup:
 	for {
 		select {
 		case details := <-c.sendPostChan:
-			details.jsonRequest.responseChan <- &response{
+			details.jsonRequest.responseChan <- &Response{
 				result: nil,
 				err:    ErrClientShutdown,
 			}
@@ -769,7 +769,7 @@ func (c *Client) sendPostRequest(httpReq *http.Request, jReq *jsonRequest) {
 	// Don't send the message if shutting down.
 	select {
 	case <-c.shutdown:
-		jReq.responseChan <- &response{result: nil, err: ErrClientShutdown}
+		jReq.responseChan <- &Response{result: nil, err: ErrClientShutdown}
 	default:
 	}
 
@@ -782,9 +782,9 @@ func (c *Client) sendPostRequest(httpReq *http.Request, jReq *jsonRequest) {
 // newFutureError returns a new future result channel that already has the
 // passed error waitin on the channel with the reply set to nil.  This is useful
 // to easily return errors from the various Async functions.
-func newFutureError(err error) chan *response {
-	responseChan := make(chan *response, 1)
-	responseChan <- &response{err: err}
+func newFutureError(err error) chan *Response {
+	responseChan := make(chan *Response, 1)
+	responseChan <- &Response{err: err}
 	return responseChan
 }
 
@@ -792,7 +792,7 @@ func newFutureError(err error) chan *response {
 // reply or any errors.  The examined errors include an error in the
 // futureResult and the error in the reply from the server.  This will block
 // until the result is available on the passed channel.
-func receiveFuture(f chan *response) ([]byte, error) {
+func receiveFuture(f chan *Response) ([]byte, error) {
 	// Wait for a response on the returned channel.
 	r := <-f
 	return r.result, r.err
@@ -813,7 +813,7 @@ func (c *Client) sendPost(jReq *jsonRequest) {
 	bodyReader := bytes.NewReader(jReq.marshalledJSON)
 	httpReq, err := http.NewRequest("POST", url, bodyReader)
 	if err != nil {
-		jReq.responseChan <- &response{result: nil, err: err}
+		jReq.responseChan <- &Response{result: nil, err: err}
 		return
 	}
 	httpReq.Close = true
@@ -844,7 +844,7 @@ func (c *Client) sendRequest(jReq *jsonRequest) {
 	select {
 	case <-c.connEstablished:
 	default:
-		jReq.responseChan <- &response{err: ErrClientNotConnected}
+		jReq.responseChan <- &Response{err: ErrClientNotConnected}
 		return
 	}
 
@@ -853,18 +853,18 @@ func (c *Client) sendRequest(jReq *jsonRequest) {
 	// channel.  Then send the marshalled request via the websocket
 	// connection.
 	if err := c.addRequest(jReq); err != nil {
-		jReq.responseChan <- &response{err: err}
+		jReq.responseChan <- &Response{err: err}
 		return
 	}
 	log.Tracef("Sending command [%s] with id %d", jReq.method, jReq.id)
 	c.sendMessage(jReq.marshalledJSON)
 }
 
-// sendCmd sends the passed command to the associated server and returns a
+// SendCmd sends the passed command to the associated server and returns a
 // response channel on which the reply will be delivered at some point in the
 // future.  It handles both websocket and HTTP POST mode depending on the
 // configuration of the client.
-func (c *Client) sendCmd(cmd interface{}) chan *response {
+func (c *Client) SendCmd(cmd interface{}) chan *Response {
 	// Get the method associated with the command.
 	method, err := btcjson.CmdMethod(cmd)
 	if err != nil {
@@ -879,7 +879,7 @@ func (c *Client) sendCmd(cmd interface{}) chan *response {
 	}
 
 	// Generate the request and send it along with a channel to respond on.
-	responseChan := make(chan *response, 1)
+	responseChan := make(chan *Response, 1)
 	jReq := &jsonRequest{
 		id:             id,
 		method:         method,
@@ -892,13 +892,13 @@ func (c *Client) sendCmd(cmd interface{}) chan *response {
 	return responseChan
 }
 
-// sendCmdAndWait sends the passed command to the associated server, waits
+// SendCmdAndWait sends the passed command to the associated server, waits
 // for the reply, and returns the result from it.  It will return the error
 // field in the reply if there is one.
-func (c *Client) sendCmdAndWait(cmd interface{}) (interface{}, error) {
+func (c *Client) SendCmdAndWait(cmd interface{}) (interface{}, error) {
 	// Marshal the command to JSON-RPC, send it to the connected server, and
 	// wait for a response on the returned channel.
-	return receiveFuture(c.sendCmd(cmd))
+	return receiveFuture(c.SendCmd(cmd))
 }
 
 // Disconnected returns whether or not the server is disconnected.  If a
@@ -979,7 +979,7 @@ func (c *Client) Disconnect() {
 	if c.config.DisableAutoReconnect {
 		for e := c.requestList.Front(); e != nil; e = e.Next() {
 			req := e.Value.(*jsonRequest)
-			req.responseChan <- &response{
+			req.responseChan <- &Response{
 				result: nil,
 				err:    ErrClientDisconnect,
 			}
@@ -1007,7 +1007,7 @@ func (c *Client) Shutdown() {
 	// Send the ErrClientShutdown error to any pending requests.
 	for e := c.requestList.Front(); e != nil; e = e.Next() {
 		req := e.Value.(*jsonRequest)
-		req.responseChan <- &response{
+		req.responseChan <- &Response{
 			result: nil,
 			err:    ErrClientShutdown,
 		}
