@@ -65,7 +65,7 @@ type FutureGetRawTransactionResult chan *Response
 // Receive waits for the Response promised by the future and returns a
 // transaction given its hash.
 func (r FutureGetRawTransactionResult) Receive() (*btcutil.Tx, error) {
-	res, err := receiveFuture(r)
+	res, err := ReceiveFuture(r)
 	if err != nil {
 		return nil, err
 	}
@@ -122,7 +122,7 @@ type FutureGetRawTransactionVerboseResult chan *Response
 // Receive waits for the Response promised by the future and returns information
 // about a transaction given its hash.
 func (r FutureGetRawTransactionVerboseResult) Receive() (*btcjson.TxRawResult, error) {
-	res, err := receiveFuture(r)
+	res, err := ReceiveFuture(r)
 	if err != nil {
 		return nil, err
 	}
@@ -167,7 +167,7 @@ type FutureDecodeRawTransactionResult chan *Response
 // Receive waits for the Response promised by the future and returns information
 // about a transaction given its serialized bytes.
 func (r FutureDecodeRawTransactionResult) Receive() (*btcjson.TxRawResult, error) {
-	res, err := receiveFuture(r)
+	res, err := ReceiveFuture(r)
 	if err != nil {
 		return nil, err
 	}
@@ -207,7 +207,7 @@ type FutureCreateRawTransactionResult chan *Response
 // transaction spending the provided inputs and sending to the provided
 // addresses.
 func (r FutureCreateRawTransactionResult) Receive() (*wire.MsgTx, error) {
-	res, err := receiveFuture(r)
+	res, err := ReceiveFuture(r)
 	if err != nil {
 		return nil, err
 	}
@@ -265,7 +265,7 @@ type FutureSendRawTransactionResult chan *Response
 // of submitting the encoded transaction to the server which then relays it to
 // the network.
 func (r FutureSendRawTransactionResult) Receive() (*chainhash.Hash, error) {
-	res, err := receiveFuture(r)
+	res, err := ReceiveFuture(r)
 	if err != nil {
 		return nil, err
 	}
@@ -314,7 +314,7 @@ type FutureSignRawTransactionResult chan *Response
 // Receive waits for the Response promised by the future and returns the
 // signed transaction as well as whether or not all inputs are now signed.
 func (r FutureSignRawTransactionResult) Receive() (*wire.MsgTx, bool, error) {
-	res, err := receiveFuture(r)
+	res, err := ReceiveFuture(r)
 	if err != nil {
 		return nil, false, err
 	}
@@ -512,7 +512,7 @@ type FutureSearchRawTransactionsResult chan *Response
 // Receive waits for the Response promised by the future and returns the
 // found raw transactions.
 func (r FutureSearchRawTransactionsResult) Receive() ([]*wire.MsgTx, error) {
-	res, err := receiveFuture(r)
+	res, err := ReceiveFuture(r)
 	if err != nil {
 		return nil, err
 	}
@@ -577,7 +577,7 @@ type FutureSearchRawTransactionsVerboseResult chan *Response
 // Receive waits for the Response promised by the future and returns the
 // found raw transactions.
 func (r FutureSearchRawTransactionsVerboseResult) Receive() ([]*btcjson.SearchRawTransactionsResult, error) {
-	res, err := receiveFuture(r)
+	res, err := ReceiveFuture(r)
 	if err != nil {
 		return nil, err
 	}
@@ -632,7 +632,7 @@ type FutureDecodeScriptResult chan *Response
 // Receive waits for the Response promised by the future and returns information
 // about a script given its serialized bytes.
 func (r FutureDecodeScriptResult) Receive() (*btcjson.DecodeScriptResult, error) {
-	res, err := receiveFuture(r)
+	res, err := ReceiveFuture(r)
 	if err != nil {
 		return nil, err
 	}

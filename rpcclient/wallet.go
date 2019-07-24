@@ -26,7 +26,7 @@ type FutureGetTransactionResult chan *Response
 // Receive waits for the Response promised by the future and returns detailed
 // information about a wallet transaction.
 func (r FutureGetTransactionResult) Receive() (*btcjson.GetTransactionResult, error) {
-	res, err := receiveFuture(r)
+	res, err := ReceiveFuture(r)
 	if err != nil {
 		return nil, err
 	}
@@ -71,7 +71,7 @@ type FutureListTransactionsResult chan *Response
 // Receive waits for the Response promised by the future and returns a list of
 // the most recent transactions.
 func (r FutureListTransactionsResult) Receive() ([]btcjson.ListTransactionsResult, error) {
-	res, err := receiveFuture(r)
+	res, err := ReceiveFuture(r)
 	if err != nil {
 		return nil, err
 	}
@@ -152,7 +152,7 @@ type FutureListUnspentResult chan *Response
 // or ListUnspentMinMaxAddressesAsync, the range may be limited by the
 // parameters of the RPC invocation.
 func (r FutureListUnspentResult) Receive() ([]btcjson.ListUnspentResult, error) {
-	res, err := receiveFuture(r)
+	res, err := ReceiveFuture(r)
 	if err != nil {
 		return nil, err
 	}
@@ -249,7 +249,7 @@ type FutureListSinceBlockResult chan *Response
 // transactions added in blocks since the specified block hash, or all
 // transactions if it is nil.
 func (r FutureListSinceBlockResult) Receive() (*btcjson.ListSinceBlockResult, error) {
-	res, err := receiveFuture(r)
+	res, err := ReceiveFuture(r)
 	if err != nil {
 		return nil, err
 	}
@@ -323,7 +323,7 @@ type FutureLockUnspentResult chan *Response
 // Receive waits for the Response promised by the future and returns the result
 // of locking or unlocking the unspent output(s).
 func (r FutureLockUnspentResult) Receive() error {
-	_, err := receiveFuture(r)
+	_, err := ReceiveFuture(r)
 	return err
 }
 
@@ -372,7 +372,7 @@ type FutureListLockUnspentResult chan *Response
 // Receive waits for the Response promised by the future and returns the result
 // of all currently locked unspent outputs.
 func (r FutureListLockUnspentResult) Receive() ([]*wire.OutPoint, error) {
-	res, err := receiveFuture(r)
+	res, err := ReceiveFuture(r)
 	if err != nil {
 		return nil, err
 	}
@@ -422,7 +422,7 @@ type FutureSetTxFeeResult chan *Response
 // of setting an optional transaction fee per KB that helps ensure transactions
 // are processed quickly.  Most transaction are 1KB.
 func (r FutureSetTxFeeResult) Receive() error {
-	_, err := receiveFuture(r)
+	_, err := ReceiveFuture(r)
 	return err
 }
 
@@ -449,7 +449,7 @@ type FutureSendToAddressResult chan *Response
 // Receive waits for the Response promised by the future and returns the hash
 // of the transaction sending the passed amount to the given address.
 func (r FutureSendToAddressResult) Receive() (*chainhash.Hash, error) {
-	res, err := receiveFuture(r)
+	res, err := ReceiveFuture(r)
 	if err != nil {
 		return nil, err
 	}
@@ -528,7 +528,7 @@ type FutureSendFromResult chan *Response
 // of the transaction sending amount to the given address using the provided
 // account as a source of funds.
 func (r FutureSendFromResult) Receive() (*chainhash.Hash, error) {
-	res, err := receiveFuture(r)
+	res, err := ReceiveFuture(r)
 	if err != nil {
 		return nil, err
 	}
@@ -636,7 +636,7 @@ type FutureSendManyResult chan *Response
 // of the transaction sending multiple amounts to multiple addresses using the
 // provided account as a source of funds.
 func (r FutureSendManyResult) Receive() (*chainhash.Hash, error) {
-	res, err := receiveFuture(r)
+	res, err := ReceiveFuture(r)
 	if err != nil {
 		return nil, err
 	}
@@ -759,7 +759,7 @@ type FutureAddMultisigAddressResult chan *Response
 // multisignature address that requires the specified number of signatures for
 // the provided addresses.
 func (r FutureAddMultisigAddressResult) Receive() (btcutil.Address, error) {
-	res, err := receiveFuture(r)
+	res, err := ReceiveFuture(r)
 	if err != nil {
 		return nil, err
 	}
@@ -803,7 +803,7 @@ type FutureCreateMultisigResult chan *Response
 // Receive waits for the Response promised by the future and returns the
 // multisignature address and script needed to redeem it.
 func (r FutureCreateMultisigResult) Receive() (*btcjson.CreateMultiSigResult, error) {
-	res, err := receiveFuture(r)
+	res, err := ReceiveFuture(r)
 	if err != nil {
 		return nil, err
 	}
@@ -847,7 +847,7 @@ type FutureCreateNewAccountResult chan *Response
 // Receive waits for the Response promised by the future and returns the
 // result of creating new account.
 func (r FutureCreateNewAccountResult) Receive() error {
-	_, err := receiveFuture(r)
+	_, err := ReceiveFuture(r)
 	return err
 }
 
@@ -873,7 +873,7 @@ type FutureGetNewAddressResult chan *Response
 // Receive waits for the Response promised by the future and returns a new
 // address.
 func (r FutureGetNewAddressResult) Receive() (btcutil.Address, error) {
-	res, err := receiveFuture(r)
+	res, err := ReceiveFuture(r)
 	if err != nil {
 		return nil, err
 	}
@@ -911,7 +911,7 @@ type FutureGetRawChangeAddressResult chan *Response
 // address for receiving change that will be associated with the provided
 // account.  Note that this is only for raw transactions and NOT for normal use.
 func (r FutureGetRawChangeAddressResult) Receive() (btcutil.Address, error) {
-	res, err := receiveFuture(r)
+	res, err := ReceiveFuture(r)
 	if err != nil {
 		return nil, err
 	}
@@ -950,7 +950,7 @@ type FutureAddWitnessAddressResult chan *Response
 // Receive waits for the Response promised by the future and returns the new
 // address.
 func (r FutureAddWitnessAddressResult) Receive() (btcutil.Address, error) {
-	res, err := receiveFuture(r)
+	res, err := ReceiveFuture(r)
 	if err != nil {
 		return nil, err
 	}
@@ -988,7 +988,7 @@ type FutureGetAccountAddressResult chan *Response
 // Receive waits for the Response promised by the future and returns the current
 // Bitcoin address for receiving payments to the specified account.
 func (r FutureGetAccountAddressResult) Receive() (btcutil.Address, error) {
-	res, err := receiveFuture(r)
+	res, err := ReceiveFuture(r)
 	if err != nil {
 		return nil, err
 	}
@@ -1026,7 +1026,7 @@ type FutureGetAccountResult chan *Response
 // Receive waits for the Response promised by the future and returns the account
 // associated with the passed address.
 func (r FutureGetAccountResult) Receive() (string, error) {
-	res, err := receiveFuture(r)
+	res, err := ReceiveFuture(r)
 	if err != nil {
 		return "", err
 	}
@@ -1064,7 +1064,7 @@ type FutureSetAccountResult chan *Response
 // Receive waits for the Response promised by the future and returns the result
 // of setting the account to be associated with the passed address.
 func (r FutureSetAccountResult) Receive() error {
-	_, err := receiveFuture(r)
+	_, err := ReceiveFuture(r)
 	return err
 }
 
@@ -1091,7 +1091,7 @@ type FutureGetAddressesByAccountResult chan *Response
 // Receive waits for the Response promised by the future and returns the list of
 // addresses associated with the passed account.
 func (r FutureGetAddressesByAccountResult) Receive() ([]btcutil.Address, error) {
-	res, err := receiveFuture(r)
+	res, err := ReceiveFuture(r)
 	if err != nil {
 		return nil, err
 	}
@@ -1140,7 +1140,7 @@ type FutureMoveResult chan *Response
 // Receive waits for the Response promised by the future and returns the result
 // of the move operation.
 func (r FutureMoveResult) Receive() (bool, error) {
-	res, err := receiveFuture(r)
+	res, err := ReceiveFuture(r)
 	if err != nil {
 		return false, err
 	}
@@ -1230,7 +1230,7 @@ type FutureRenameAccountResult chan *Response
 // Receive waits for the Response promised by the future and returns the
 // result of creating new account.
 func (r FutureRenameAccountResult) Receive() error {
-	_, err := receiveFuture(r)
+	_, err := ReceiveFuture(r)
 	return err
 }
 
@@ -1256,7 +1256,7 @@ type FutureValidateAddressResult chan *Response
 // Receive waits for the Response promised by the future and returns information
 // about the given bitcoin address.
 func (r FutureValidateAddressResult) Receive() (*btcjson.ValidateAddressWalletResult, error) {
-	res, err := receiveFuture(r)
+	res, err := ReceiveFuture(r)
 	if err != nil {
 		return nil, err
 	}
@@ -1294,7 +1294,7 @@ type FutureKeyPoolRefillResult chan *Response
 // Receive waits for the Response promised by the future and returns the result
 // of refilling the key pool.
 func (r FutureKeyPoolRefillResult) Receive() error {
-	_, err := receiveFuture(r)
+	_, err := ReceiveFuture(r)
 	return err
 }
 
@@ -1343,7 +1343,7 @@ type FutureListAccountsResult chan *Response
 // Receive waits for the Response promised by the future and returns returns a
 // map of account names and their associated balances.
 func (r FutureListAccountsResult) Receive() (map[string]btcutil.Amount, error) {
-	res, err := receiveFuture(r)
+	res, err := ReceiveFuture(r)
 	if err != nil {
 		return nil, err
 	}
@@ -1412,7 +1412,7 @@ type FutureGetBalanceResult chan *Response
 // Receive waits for the Response promised by the future and returns the
 // available balance from the server for the specified account.
 func (r FutureGetBalanceResult) Receive() (btcutil.Amount, error) {
-	res, err := receiveFuture(r)
+	res, err := ReceiveFuture(r)
 	if err != nil {
 		return 0, err
 	}
@@ -1441,7 +1441,7 @@ type FutureGetBalanceParseResult chan *Response
 // Receive waits for the Response promised by the future and returns the
 // available balance from the server for the specified account.
 func (r FutureGetBalanceParseResult) Receive() (btcutil.Amount, error) {
-	res, err := receiveFuture(r)
+	res, err := ReceiveFuture(r)
 	if err != nil {
 		return 0, err
 	}
@@ -1515,7 +1515,7 @@ type FutureGetReceivedByAccountResult chan *Response
 // Receive waits for the Response promised by the future and returns the total
 // amount received with the specified account.
 func (r FutureGetReceivedByAccountResult) Receive() (btcutil.Amount, error) {
-	res, err := receiveFuture(r)
+	res, err := ReceiveFuture(r)
 	if err != nil {
 		return 0, err
 	}
@@ -1580,7 +1580,7 @@ type FutureGetUnconfirmedBalanceResult chan *Response
 // Receive waits for the Response promised by the future and returns returns the
 // unconfirmed balance from the server for the specified account.
 func (r FutureGetUnconfirmedBalanceResult) Receive() (btcutil.Amount, error) {
-	res, err := receiveFuture(r)
+	res, err := ReceiveFuture(r)
 	if err != nil {
 		return 0, err
 	}
@@ -1624,7 +1624,7 @@ type FutureGetReceivedByAddressResult chan *Response
 // Receive waits for the Response promised by the future and returns the total
 // amount received by the specified address.
 func (r FutureGetReceivedByAddressResult) Receive() (btcutil.Amount, error) {
-	res, err := receiveFuture(r)
+	res, err := ReceiveFuture(r)
 	if err != nil {
 		return 0, err
 	}
@@ -1693,7 +1693,7 @@ type FutureListReceivedByAccountResult chan *Response
 // Receive waits for the Response promised by the future and returns a list of
 // balances by account.
 func (r FutureListReceivedByAccountResult) Receive() ([]btcjson.ListReceivedByAccountResult, error) {
-	res, err := receiveFuture(r)
+	res, err := ReceiveFuture(r)
 	if err != nil {
 		return nil, err
 	}
@@ -1780,7 +1780,7 @@ type FutureListReceivedByAddressResult chan *Response
 // Receive waits for the Response promised by the future and returns a list of
 // balances by address.
 func (r FutureListReceivedByAddressResult) Receive() ([]btcjson.ListReceivedByAddressResult, error) {
-	res, err := receiveFuture(r)
+	res, err := ReceiveFuture(r)
 	if err != nil {
 		return nil, err
 	}
@@ -1869,7 +1869,7 @@ type FutureWalletLockResult chan *Response
 // Receive waits for the Response promised by the future and returns the result
 // of locking the wallet.
 func (r FutureWalletLockResult) Receive() error {
-	_, err := receiveFuture(r)
+	_, err := ReceiveFuture(r)
 	return err
 }
 
@@ -1908,7 +1908,7 @@ type FutureWalletPassphraseChangeResult chan *Response
 // Receive waits for the Response promised by the future and returns the result
 // of changing the wallet passphrase.
 func (r FutureWalletPassphraseChangeResult) Receive() error {
-	_, err := receiveFuture(r)
+	_, err := ReceiveFuture(r)
 	return err
 }
 
@@ -1939,7 +1939,7 @@ type FutureSignMessageResult chan *Response
 // Receive waits for the Response promised by the future and returns the message
 // signed with the private key of the specified address.
 func (r FutureSignMessageResult) Receive() (string, error) {
-	res, err := receiveFuture(r)
+	res, err := ReceiveFuture(r)
 	if err != nil {
 		return "", err
 	}
@@ -1980,7 +1980,7 @@ type FutureVerifyMessageResult chan *Response
 // Receive waits for the Response promised by the future and returns whether or
 // not the message was successfully verified.
 func (r FutureVerifyMessageResult) Receive() (bool, error) {
-	res, err := receiveFuture(r)
+	res, err := ReceiveFuture(r)
 	if err != nil {
 		return false, err
 	}
@@ -2026,7 +2026,7 @@ type FutureDumpPrivKeyResult chan *Response
 // key corresponding to the passed address encoded in the wallet import format
 // (WIF)
 func (r FutureDumpPrivKeyResult) Receive() (*btcutil.WIF, error) {
-	res, err := receiveFuture(r)
+	res, err := ReceiveFuture(r)
 	if err != nil {
 		return nil, err
 	}
@@ -2068,7 +2068,7 @@ type FutureImportAddressResult chan *Response
 // Receive waits for the Response promised by the future and returns the result
 // of importing the passed public address.
 func (r FutureImportAddressResult) Receive() error {
-	_, err := receiveFuture(r)
+	_, err := ReceiveFuture(r)
 	return err
 }
 
@@ -2111,7 +2111,7 @@ type FutureImportPrivKeyResult chan *Response
 // of importing the passed private key which must be the wallet import format
 // (WIF).
 func (r FutureImportPrivKeyResult) Receive() error {
-	_, err := receiveFuture(r)
+	_, err := ReceiveFuture(r)
 	return err
 }
 
@@ -2186,7 +2186,7 @@ type FutureImportPubKeyResult chan *Response
 // Receive waits for the Response promised by the future and returns the result
 // of importing the passed public key.
 func (r FutureImportPubKeyResult) Receive() error {
-	_, err := receiveFuture(r)
+	_, err := ReceiveFuture(r)
 	return err
 }
 
@@ -2235,7 +2235,7 @@ type FutureGetInfoResult chan *Response
 // Receive waits for the Response promised by the future and returns the info
 // provided by the server.
 func (r FutureGetInfoResult) Receive() (*btcjson.InfoWalletResult, error) {
-	res, err := receiveFuture(r)
+	res, err := ReceiveFuture(r)
 	if err != nil {
 		return nil, err
 	}
