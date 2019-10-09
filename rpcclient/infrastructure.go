@@ -823,7 +823,7 @@ func (c *Client) sendPost(jReq *jsonRequest) {
 	// Configure basic access authorization.
 	user, pass, err := c.config.getAuth()
 	if err != nil {
-		jReq.responseChan <- &response{result: nil, err: err}
+		jReq.responseChan <- &Response{result: nil, err: err}
 		return
 	}
 	httpReq.SetBasicAuth(user, pass)
