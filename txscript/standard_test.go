@@ -10,8 +10,8 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcd/wire"
+	"github.com/namecoin/btcd/chaincfg"
+	"github.com/namecoin/btcd/wire"
 	"github.com/btcsuite/btcutil"
 )
 

@@ -12,9 +12,9 @@ import (
 	"runtime"
 	"testing"
 
-	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcd/database"
-	"github.com/btcsuite/btcd/database/ffldb"
+	"github.com/namecoin/btcd/chaincfg"
+	"github.com/namecoin/btcd/database"
+	"github.com/namecoin/btcd/database/ffldb"
 	"github.com/btcsuite/btcutil"
 )
 

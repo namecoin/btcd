@@ -12,12 +12,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/btcsuite/btcd/blockchain"
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/txscript"
-	"github.com/btcsuite/btcd/wire"
+	"github.com/namecoin/btcd/blockchain"
+	"github.com/namecoin/btcd/btcec"
+	"github.com/namecoin/btcd/chaincfg"
+	"github.com/namecoin/btcd/chaincfg/chainhash"
+	"github.com/namecoin/btcd/txscript"
+	"github.com/namecoin/btcd/wire"
 	"github.com/btcsuite/btcutil"
 )
 
