@@ -246,12 +246,12 @@ func (c *Client) Ping() error {
 
 // FutureGetNetworkInfoResult is a future promise to deliver the result of a
 // GetNetworkInfoAsync RPC invocation (or an applicable error).
-type FutureGetNetworkInfoResult chan *response
+type FutureGetNetworkInfoResult chan *Response
 
 // Receive waits for the response promised by the future and returns data about
 // the current network.
 func (r FutureGetNetworkInfoResult) Receive() (*btcjson.GetNetworkInfoResult, error) {
-	res, err := receiveFuture(r)
+	res, err := ReceiveFuture(r)
 	if err != nil {
 		return nil, err
 	}
@@ -273,7 +273,7 @@ func (r FutureGetNetworkInfoResult) Receive() (*btcjson.GetNetworkInfoResult, er
 // See GetNetworkInfo for the blocking version and more details.
 func (c *Client) GetNetworkInfoAsync() FutureGetNetworkInfoResult {
 	cmd := btcjson.NewGetNetworkInfoCmd()
-	return c.sendCmd(cmd)
+	return c.SendCmd(cmd)
 }
 
 // GetNetworkInfo returns data about the current network.
