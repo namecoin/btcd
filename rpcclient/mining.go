@@ -100,7 +100,7 @@ func (f FutureGenerateToAddressResult) Receive() ([]*chainhash.Hash, error) {
 // See GenerateToAddress for the blocking version and more details.
 func (c *Client) GenerateToAddressAsync(numBlocks int64, address btcutil.Address, maxTries *int64) FutureGenerateToAddressResult {
 	cmd := btcjson.NewGenerateToAddressCmd(numBlocks, address.EncodeAddress(), maxTries)
-	return c.sendCmd(cmd)
+	return c.SendCmd(cmd)
 }
 
 // GenerateToAddress generates numBlocks blocks to the given address and returns their hashes.

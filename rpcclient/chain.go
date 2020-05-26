@@ -769,7 +769,7 @@ func (r FutureEstimateSmartFeeResult) Receive() (*btcjson.EstimateSmartFeeResult
 // See EstimateSmartFee for the blocking version and more details.
 func (c *Client) EstimateSmartFeeAsync(confTarget int64, mode *btcjson.EstimateSmartFeeMode) FutureEstimateSmartFeeResult {
 	cmd := btcjson.NewEstimateSmartFeeCmd(confTarget, mode)
-	return c.sendCmd(cmd)
+	return c.SendCmd(cmd)
 }
 
 // EstimateSmartFee requests the server to estimate a fee level based on the given parameters.
@@ -1143,7 +1143,7 @@ func (c *Client) GetBlockStatsAsync(hashOrHeight interface{}, stats *[]string) F
 	}
 
 	cmd := btcjson.NewGetBlockStatsCmd(btcjson.HashOrHeight{Value: hashOrHeight}, stats)
-	return c.sendCmd(cmd)
+	return c.SendCmd(cmd)
 }
 
 // GetBlockStats returns block statistics. First argument specifies height or hash of the target block.
