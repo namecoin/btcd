@@ -63,7 +63,7 @@ func (c *Client) Generate(numBlocks uint32) ([]*chainhash.Hash, error) {
 
 // FutureGenerateToAddressResult is a future promise to deliver the result of a
 // GenerateToAddressResult RPC invocation (or an applicable error).
-type FutureGenerateToAddressResult chan *response
+type FutureGenerateToAddressResult chan *Response
 
 // Receive waits for the response promised by the future and returns the hashes of
 // of the generated blocks.
