@@ -78,7 +78,7 @@ func (c *Client) legacyGetBlockRequest(hash string, verbose,
 // waitForGetBlockRes waits for the response of a getblock request. If the
 // response indicates an invalid parameter was provided, a legacy style of the
 // request is resent and its response is returned instead.
-func (c *Client) waitForGetBlockRes(respChan chan *response, hash string,
+func (c *Client) waitForGetBlockRes(respChan chan *Response, hash string,
 	verbose, verboseTx bool) ([]byte, error) {
 
 	res, err := ReceiveFuture(respChan)
@@ -219,7 +219,7 @@ func (c *Client) GetBlockVerbose(blockHash *chainhash.Hash) (*btcjson.GetBlockVe
 type FutureGetBlockVerboseTxResult struct {
 	client   *Client
 	hash     string
-	Response chan *response
+	Response chan *Response
 }
 
 // Receive waits for the response promised by the future and returns a verbose
@@ -744,7 +744,7 @@ func (c *Client) EstimateFee(numBlocks int64) (float64, error) {
 
 // FutureEstimateFeeResult is a future promise to deliver the result of a
 // EstimateSmartFeeAsync RPC invocation (or an applicable error).
-type FutureEstimateSmartFeeResult chan *response
+type FutureEstimateSmartFeeResult chan *Response
 
 // Receive waits for the response promised by the future and returns the
 // estimated fee.
@@ -1113,7 +1113,7 @@ func (c *Client) GetCFilterHeader(blockHash *chainhash.Hash,
 
 // FutureGetBlockStatsResult is a future promise to deliver the result of a
 // GetBlockStatsAsync RPC invocation (or an applicable error).
-type FutureGetBlockStatsResult chan *response
+type FutureGetBlockStatsResult chan *Response
 
 // Receive waits for the response promised by the future and returns statistics
 // of a block at a certain height.
