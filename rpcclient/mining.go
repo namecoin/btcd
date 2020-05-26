@@ -68,7 +68,7 @@ type FutureGenerateToAddressResult chan *Response
 // Receive waits for the response promised by the future and returns the hashes of
 // of the generated blocks.
 func (f FutureGenerateToAddressResult) Receive() ([]*chainhash.Hash, error) {
-	res, err := receiveFuture(f)
+	res, err := ReceiveFuture(f)
 	if err != nil {
 		return nil, err
 	}
